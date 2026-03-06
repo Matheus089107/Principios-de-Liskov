@@ -23,36 +23,83 @@ strategy/impl/: As regras reais (FretePadrao e FreteGratis).
 service/ProcessadorDePagamento.java: O Cliente que faz a cobrança.
 
 3. Código Refatorado
+
+   
 O Contrato (Interface)
+
+
 Java
+
+
 public interface EstrategiaDeFrete {
+
+
     double calcularValorFinal(Pedido pedido);
-}
-As Regras (Implementações)
-Java
-// Frete Padrão: Soma R$ 15,00
-public class FretePadrao implements EstrategiaDeFrete {
-    public double calcularValorFinal(Pedido pedido) {
-        return pedido.getValorBruto() + 15.0;
-    }
+
+    
 }
 
-// Frete Grátis: Não soma nada
-public class FreteGratis implements EstrategiaDeFrete {
+
+As Regras (Implementações)
+
+
+Java
+
+
+// Frete Padrão: Soma R$ 15,00
+
+
+public class FretePadrao implements EstrategiaDeFrete {
+
+
     public double calcularValorFinal(Pedido pedido) {
-        return pedido.getValorBruto();
+
+    
+        return pedido.getValorBruto() + 15.0;
+
+        
     }
+
+    
 }
+
+public class FreteGratis implements EstrategiaDeFrete {
+
+
+    public double calcularValorFinal(Pedido pedido) {
+
+    
+        return pedido.getValorBruto();
+
+        
+    }
+
+    
+}
+
+
 O Cliente (Respeitando o LSP)
+
+
 O ProcessadorDePagamento agora aceita qualquer frete sem precisar de if/else. Ele confia na interface!
 
+
 Java
+
+
 public class ProcessadorDePagamento {
+
+
     public void processar(Pedido pedido, EstrategiaDeFrete frete) {
-        // Não importa qual frete é, o método calcularValorFinal sempre funcionará
-        double total = frete.calcularValorFinal(pedido);
+
+    
+    double total = frete.calcularValorFinal(pedido);
+
+    
         System.out.println("Total a pagar: R$ " + total);
+
+        
     }
 }
-✅ Resultado
+
 Agora você pode trocar FretePadrao por FreteGratis a qualquer momento. O programa não quebra, o comportamento é previsível e o código ficou muito mais limpo!
